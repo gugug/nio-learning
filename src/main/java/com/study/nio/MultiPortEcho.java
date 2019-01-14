@@ -69,7 +69,8 @@ public class MultiPortEcho {
             while (it.hasNext()) {
                 SelectionKey key = (SelectionKey) it.next();
 
-                if ((key.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) {
+                //用“位与”操作ready集合和给定的SelectionKey常量，可以确定某个确定的事件是否在ready集合中
+                if ((key.readyOps() & SelectionKey.OP_ACCEPT) == SelectionKey.OP_ACCEPT) { //key.isAcceptable()
                     // Accept the new connection //监听新连接
                     ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
                     SocketChannel sc = ssc.accept();
@@ -84,7 +85,7 @@ public class MultiPortEcho {
 
                     System.out.println("Got connection from " + sc);
                 } else if ((key.readyOps() & SelectionKey.OP_READ)
-                        == SelectionKey.OP_READ) {
+                        == SelectionKey.OP_READ) { //key.isReadable()
                     // Read the data //传入的 I/O
                     SocketChannel sc = (SocketChannel) key.channel();
 
