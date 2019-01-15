@@ -1,9 +1,10 @@
 # study jav-nio
-##ref  
+[TOC]
+## ref  
 [IBM: NIO 入门](https://www.ibm.com/developerworks/cn/education/java/j-nio/j-nio.html)
 [Java NIO Tutorial](http://tutorials.jenkov.com/java-nio/index.html)
 
-##三大元素
+## 三大元素
 * Channels
 * Buffers
 * Selectors
@@ -27,7 +28,7 @@
 * IntBuffer
 * LongBuffer
 * ShortBuffer
-###flip
+### flip
 我们要将数据写到输出通道中。在这之前，必须调用 flip() 方法。使得buffer从read模式转换到write模式
 这个方法做两件非常重要的事：
 1. 将 limit 设置为当前 position
@@ -51,7 +52,7 @@ clear()方法清除整个缓冲区。 compact()方法仅清除已读取的数据
 
 在分散读取中，按照缓冲区在数组中出现的顺序从通道写入数据，通道依次填充每个缓冲区。填满一个缓冲区后，它就开始填充下一个。在某种意义上，缓冲区数组就像一个大缓冲区。
 
-##选择器（selector）
+## 选择器（selector）
 您可以使用选择器使用单个线程处理多个通道。
 ```java
 //创建新的选择器
@@ -62,7 +63,7 @@ channel.configureBlocking(false);
 SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 ```
 通道必须处于非阻塞模式才能与选择器一起使用。这意味着您无法将FileChannel与Selector一起使用，因为FileChannel无法切换到非阻塞模式。套接字通道可以正常工作。
-###注册监听事件类别
+### 注册监听事件类别
 * SelectionKey.OP_CONNECT
 * SelectionKey.OP_ACCEPT
 * SelectionKey.OP_READ
@@ -72,7 +73,7 @@ SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
 FileChannel无法设置为非阻塞模式。它始终以阻塞模式运行。
 
 
-##Pipe
+## Pipe
 Java NIO Pipe是两个线程之间的单向数据连接。管道具有源通道和接收器通道。您将数据写入接收器通道。然后可以从源通道读取该数据。
 
 ## NIO vs. IO
@@ -81,11 +82,11 @@ IO   | NIO
 面向流 |  面向缓冲
 阻塞IO |  非阻塞IO
 无     |  选择器
-###面向流&面向缓冲
+### 面向流&面向缓冲
 * IO面向流：意味着每次从流中读一个或多个字节，直至读取所有字节，它们没有被缓存在任何地方。此外，它不能前后移动流中的数据。
 * 面向缓冲：您可以根据需要在缓冲区中前后移动。这使您在处理过程中更具灵活性。需要检查缓冲区是否包含完整所需的数据，需要确保在读入缓冲区时，不覆盖尚未处理的缓冲区中的数据。
-###阻塞&非阻塞IO
+### 阻塞&非阻塞IO
 * IO的各种流是阻塞的。这意味着，当一个线程调用read() 或 write()时，该线程被阻塞，直到有一些数据被读取，或数据完全写入。该线程在此期间不能再干任何事情了。
 * 非阻塞：线程可以请求从通道读取数据，并且只获取当前可用的数据，或者当前没有数据的时候。不获取任何内容。线程可以继续处理其他事情，而不是在数据可供读取之前保持阻塞状态。
-###选择器selector
+### 选择器selector
 * NIO的选择器允许一个单独的线程来监视多个通道的输入，你可以使用一个选择器注册多个通道，然后使用一个单独的线程来“选择”通道，这种选择器机制使单个线程可以轻松管理多个通道。
